@@ -2,12 +2,10 @@ var CACHE_NAME = 'sw-ex';
 var CACHE_VERSION = 1;
 
 var filesToCache = [
-  '/',
-  '/index.html',
-  '/css/styles.css',
-  '/js/app.js',
-  '/images/yeoman.png',
-  '/images/touch/chrome-touch-icon-192x192.png'
+  './',
+  './VAADIN/themes/mytheme/styles.css?v=7.7.6',
+  './VAADIN/js/app.js',
+  './VAADIN/images/vaadinlogo-192x192.png'
 ];
 
 self.oninstall = function(event) {
