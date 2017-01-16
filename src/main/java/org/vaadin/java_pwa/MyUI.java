@@ -1,12 +1,25 @@
 package org.vaadin.java_pwa;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+
+import org.apache.commons.io.IOUtils;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.server.RequestHandler;
+import com.vaadin.server.ServiceException;
+import com.vaadin.server.SessionInitEvent;
+import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinResponse;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
@@ -47,5 +60,44 @@ public class MyUI extends UI {
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
+    	
+		@Override
+		protected void servletInitialized() throws ServletException {
+			super.servletInitialized();
+
+			getService().addSessionInitListener(new SessionInitListener() {
+
+				@Override
+				public void sessionInit(SessionInitEvent event) throws ServiceException {
+					event.getSession().addRequestHandler(new RequestHandler() {
+
+						@Override
+						public boolean handleRequest(VaadinSession session, VaadinRequest request,
+								VaadinResponse response) throws IOException {
+
+							String pathInfo = request.getPathInfo();
+							InputStream in = null;
+
+							if (pathInfo.endsWith("sw.js")) {
+								response.setContentType("application/javascript");
+								in = getClass().getResourceAsStream("/sw.js");
+							}
+
+							if (in != null) {
+								OutputStream out = response.getOutputStream();
+								IOUtils.copy(in, out);
+								in.close();
+								out.close();
+
+								return true;
+							} else {
+
+								return false;
+							}
+						}
+					});
+				}
+			});
+		}
     }
 }
