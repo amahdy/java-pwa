@@ -1,52 +1,27 @@
-java-pwa
-==============
+Progressive Web App with Java
+=============================
 
-Template for a simple Vaadin application that only requires a Servlet 3.0 container to run.
+This guide show you how to get PWA functionalities in a Java application.
 
+Step by step guide
+==================
 
-Workflow
-========
+Here are easy steps on how to make a Java app, PWA compatible:
 
-To compile the entire project, run "mvn install".
+[Step 0 | Simple Vaadin App](https://github.com/amahdy/java-pwa/commit/8c0b257725af0e130bb5a00dc4004188d8515367)
 
-To run the application, run "mvn jetty:run" and open http://localhost:8080/ .
+[Step 1 | Simple JS PWA](https://github.com/amahdy/java-pwa/commit/56fb4fc711071d44f93607fd227bd0d7ad60bfb8)
 
-To produce a deployable production mode WAR:
-- change productionMode to true in the servlet class configuration (nested in the UI class)
-- run "mvn clean package"
-- test the war file with "mvn jetty:run-war"
+[Step 2 | Add JS responsible about SW](https://github.com/amahdy/java-pwa/commit/2b70f0b6b898b30934237e2a94353ab858afb6f8)
 
-Client-Side compilation
--------------------------
+[Step 3 | Add service worker](https://github.com/amahdy/java-pwa/commit/47e3dccd1502cbc1d755aad3eccc4f8a88e33b8f)
 
-The generated maven project is using an automatically generated widgetset by default. 
-When you add a dependency that needs client-side compilation, the maven plugin will 
-automatically generate it for you. Your own client-side customisations can be added into
-package "client".
+[Step 4 | Update cached files](https://github.com/amahdy/java-pwa/commit/b5e39a6a37ed90960b09706bfa7a269f1627b943)
 
-Debugging client side code
-  - run "mvn vaadin:run-codeserver" on a separate console while the application is running
-  - activate Super Dev Mode in the debug window of the application
+[Step 5 | Include manifest file](https://github.com/amahdy/java-pwa/commit/e03fa472b0d5caecef28390a51020457ec01ace5)
 
-Developing a theme using the runtime compiler
--------------------------
+[Step 6 | Add relevant meta tags](https://github.com/amahdy/java-pwa/commit/81f310424bea49966c09f53bab9de8adbfad850c)
 
-When developing the theme, Vaadin can be configured to compile the SASS based
-theme at runtime in the server. This way you can just modify the scss files in
-your IDE and reload the browser to see changes.
+[Step 7 | Compression and production mode](https://github.com/amahdy/java-pwa/commit/3ab3b9de851bad9eac03c3428021b757aac06d01)
 
-To use the runtime compilation, open pom.xml and comment out the compile-theme 
-goal from vaadin-maven-plugin configuration. To remove a possibly existing 
-pre-compiled theme, run "mvn clean package" once.
-
-When using the runtime compiler, running the application in the "run" mode 
-(rather than in "debug" mode) can speed up consecutive theme compilations
-significantly.
-
-It is highly recommended to disable runtime compilation for production WAR files.
-
-Using Vaadin pre-releases
--------------------------
-
-If Vaadin pre-releases are not enabled by default, use the Maven parameter
-"-P vaadin-prerelease" or change the activation default value of the profile in pom.xml .
+[Step 8 | Show data in a working app](https://github.com/amahdy/java-pwa/commit/4c0ceb5582fbbc355dc5a834344ea394f96e99db)
