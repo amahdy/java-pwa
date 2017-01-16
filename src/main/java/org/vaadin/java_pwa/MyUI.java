@@ -10,7 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import org.apache.commons.io.IOUtils;
 import org.vaadin.leif.headertags.HeaderTagHandler;
 import org.vaadin.leif.headertags.Link;
-import org.vaadin.leif.headertags.LinkTags;
+import org.vaadin.leif.headertags.Meta;
+import org.vaadin.leif.headertags.MetaTags;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
@@ -38,6 +39,10 @@ import com.vaadin.ui.VerticalLayout;
  */
 @Theme("mytheme")
 @JavaScript("vaadin://js/app.js")
+@MetaTags({
+	@Meta(name="viewport", content="width=device-width, initial-scale=1"),
+	@Meta(name="theme-color", content="#00b4f0")
+})
 @Link(rel="manifest", href="VAADIN/manifest.json")
 public class MyUI extends UI {
 
