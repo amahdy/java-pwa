@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
 import org.apache.commons.io.IOUtils;
+import org.vaadin.java_pwa.backend.Workout;
+import org.vaadin.java_pwa.backend.WorkoutDataReader;
 import org.vaadin.leif.headertags.HeaderTagHandler;
 import org.vaadin.leif.headertags.Link;
 import org.vaadin.leif.headertags.Meta;
@@ -16,6 +18,7 @@ import org.vaadin.leif.headertags.MetaTags;
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.RequestHandler;
 import com.vaadin.server.ServiceException;
 import com.vaadin.server.SessionInitEvent;
@@ -24,11 +27,9 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinResponse;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.renderers.ImageRenderer;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -41,29 +42,23 @@ import com.vaadin.ui.VerticalLayout;
 @JavaScript("vaadin://js/app.js")
 @MetaTags({
 	@Meta(name="viewport", content="width=device-width, initial-scale=1"),
-	@Meta(name="theme-color", content="#00b4f0")
+	@Meta(name="theme-color", content="#404549")
 })
 @Link(rel="manifest", href="VAADIN/manifest.json")
 public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        final VerticalLayout layout = new VerticalLayout();
-        
-        final TextField name = new TextField();
-        name.setCaption("Type your name here:");
 
-        Button button = new Button("Click Me");
-        button.addClickListener( e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue() 
-                    + ", it works!"));
-        });
-        
-        layout.addComponents(name, button);
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        
-        setContent(layout);
+    	BeanItemContainer<Workout> container = new BeanItemContainer<>(
+    			Workout.class, new WorkoutDataReader().run());
+
+    	Grid grid = new Grid();
+    	grid.setContainerDataSource(container);
+    	grid.getColumn("sport").setRenderer(new ImageRenderer());
+    	grid.setSizeFull();
+
+        setContent(grid);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
