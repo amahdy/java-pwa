@@ -8,6 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
 import org.apache.commons.io.IOUtils;
+import org.vaadin.leif.headertags.HeaderTagHandler;
+import org.vaadin.leif.headertags.Link;
+import org.vaadin.leif.headertags.LinkTags;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
@@ -35,6 +38,7 @@ import com.vaadin.ui.VerticalLayout;
  */
 @Theme("mytheme")
 @JavaScript("vaadin://js/app.js")
+@Link(rel="manifest", href="VAADIN/manifest.json")
 public class MyUI extends UI {
 
     @Override
@@ -65,6 +69,8 @@ public class MyUI extends UI {
 		protected void servletInitialized() throws ServletException {
 			super.servletInitialized();
 
+            HeaderTagHandler.init(getService());
+			
 			getService().addSessionInitListener(new SessionInitListener() {
 
 				@Override
