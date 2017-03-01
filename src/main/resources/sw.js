@@ -10,27 +10,33 @@ var filesToCache = [
 
 self.oninstall = function(event) {
   event.waitUntil(
-    caches.open(CACHE_NAME + '-v' + CACHE_VERSION).then(function(cache) {
-      return cache.addAll(filesToCache);
-    })
+    self.skipWaiting().then(
+      caches.open(CACHE_NAME + '-v' + CACHE_VERSION).then(function(cache) {
+        return cache.addAll(filesToCache);
+      })
+    )
   );
 };
 
 self.onactivate = function(event) {
-  var currentCacheName = CACHE_NAME + '-v' + CACHE_VERSION;
-  caches.keys().then(function(cacheNames) {
-    return Promise.all(
-      cacheNames.map(function(cacheName) {
-        if (cacheName.indexOf(CACHE_NAME) == -1) {
-          return;
-        }
+  event.waitUntil(
+    self.clients.claim().then(function() {
+      var currentCacheName = CACHE_NAME + '-v' + CACHE_VERSION;
+      return caches.keys().then(function(cacheNames) {
+        return Promise.all(
+          cacheNames.map(function(cacheName) {
+            if (cacheName.indexOf(CACHE_NAME) == -1) {
+              return;
+            }
 
-        if (cacheName != currentCacheName) {
-          return caches.delete(cacheName);
-        }
-      })
-    );
-  });
+            if (cacheName != currentCacheName) {
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      });
+    })
+  );
 };
 
 self.onfetch = function(event) {
