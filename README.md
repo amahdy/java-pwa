@@ -30,6 +30,8 @@ Here are easy steps on how to make a Java app, PWA compatible:
 
 [Step 8 | Show data in a working app](https://github.com/amahdy/java-pwa/commit/4c0ceb5582fbbc355dc5a834344ea394f96e99db)
 
+[Step 9 | Skip waiting when updating the service worker](https://github.com/amahdy/java-pwa/commit/e2c88aefc8fb3f1957b377cf4070cb5446a8c5d2)
+
 How the final app looks like
 ============================
 
