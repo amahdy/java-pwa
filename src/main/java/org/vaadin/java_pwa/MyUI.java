@@ -1,12 +1,14 @@
 package org.vaadin.java_pwa;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-
+import com.vaadin.annotations.JavaScript;
+import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.renderers.ImageRenderer;
 import org.apache.commons.io.IOUtils;
 import org.vaadin.java_pwa.backend.Workout;
 import org.vaadin.java_pwa.backend.WorkoutDataReader;
@@ -15,21 +17,13 @@ import org.vaadin.leif.headertags.Link;
 import org.vaadin.leif.headertags.Meta;
 import org.vaadin.leif.headertags.MetaTags;
 
-import com.vaadin.annotations.JavaScript;
-import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.RequestHandler;
-import com.vaadin.server.ServiceException;
-import com.vaadin.server.SessionInitEvent;
-import com.vaadin.server.SessionInitListener;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinResponse;
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.renderers.ImageRenderer;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -70,40 +64,28 @@ public class MyUI extends UI {
 			super.servletInitialized();
 
             HeaderTagHandler.init(getService());
-			
-			getService().addSessionInitListener(new SessionInitListener() {
+		}
 
-				@Override
-				public void sessionInit(SessionInitEvent event) throws ServiceException {
-					event.getSession().addRequestHandler(new RequestHandler() {
+		@Override
+		protected void service(HttpServletRequest request, HttpServletResponse response)
+				throws ServletException, IOException {
+			String pathInfo = request.getPathInfo();
 
-						@Override
-						public boolean handleRequest(VaadinSession session, VaadinRequest request,
-								VaadinResponse response) throws IOException {
-
-							String pathInfo = request.getPathInfo();
-							InputStream in = null;
-
-							if (pathInfo.endsWith("sw.js")) {
-								response.setContentType("application/javascript");
-								in = getClass().getResourceAsStream("/sw.js");
-							}
-
-							if (in != null) {
-								OutputStream out = response.getOutputStream();
-								IOUtils.copy(in, out);
-								in.close();
-								out.close();
-
-								return true;
-							} else {
-
-								return false;
-							}
-						}
-					});
+			if (pathInfo.endsWith("sw.js")) {
+				try (InputStream in = getClass().getResourceAsStream("/sw.js")) {
+					if (in == null) {
+						response.sendError(404);
+						return;
+					}
+					response.setContentType("application/javascript");
+					OutputStream out = response.getOutputStream();
+					IOUtils.copy(in, out);
+					in.close();
+					out.close();
 				}
-			});
+			} else {
+				super.service(request, response);
+			}
 		}
     }
 }
