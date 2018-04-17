@@ -1,7 +1,7 @@
 Progressive Web App with Java
 =============================
 
-This guide show you how to get PWA functionalities in a Java application.
+This guide shows you how to get PWA functionalities in a Java application.
 
 Java app before applying PWA functionaities | Final app with PWA, running standalone
 :-:|:-:
