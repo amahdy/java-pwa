@@ -1,7 +1,7 @@
 Progressive Web App with Java
 =============================
 
-This guide show you how to get PWA functionalities in a Java application.
+This guide shows you how to get PWA functionalities in a Java application.
 
 Java app before applying PWA functionaities | Final app with PWA, running standalone
 :-:|:-:
@@ -36,5 +36,5 @@ How the final app looks like
 ============================
 
 App icon on the desktop | Splash screen when opened | App drawer
-:-:|:-:|:-:|:-:|:-:
+:-:|:-:|:-:
 <img src="https://github.com/amahdy/java-pwa/blob/master/readme_files/appDesktop.png" alt="Java app without PWA" height="500px"> | <img src="https://github.com/amahdy/java-pwa/blob/master/readme_files/splash.png" alt="Java app without PWA" height="500px"> | <img src="https://github.com/amahdy/java-pwa/blob/master/readme_files/appDrawer.png" alt="Java app without PWA" height="500px">
